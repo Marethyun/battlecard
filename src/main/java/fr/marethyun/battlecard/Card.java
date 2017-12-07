@@ -31,4 +31,10 @@ public final class Card implements Comparable {
         Card card = (Card) o;
         return Integer.compare(card.getType().getWeight(), this.getType().getWeight());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Card card = (Card) o;
+        return card.getType().getWeight() == this.type.getWeight();
+    }
 }

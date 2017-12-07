@@ -4,7 +4,7 @@ public enum CardType {
 
     TWO("Deux", 1),
     THREE("Trois", 2),
-    FOUR("Four", 3),
+    FOUR("Quatre", 3),
     FIVE("Cinq", 4),
     SIX("Six", 5),
     SEVEN("Sept", 6),

@@ -1,6 +1,7 @@
 package fr.marethyun.battlecard;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Marethyun
@@ -23,7 +24,19 @@ public class Game {
 
         dispatch(pick, (Player[]) players.toArray());
 
-        new Bet(players).bet();
+        while (players.size() > 1) {
+
+            players = players.stream().filter(player -> player.getDeck().size() > 0).collect(Collectors.toList());
+
+            new Battle(players).fight();
+
+            players.forEach(System.out::println);
+            System.out.println();
+
+
+        }
+
+        System.out.println("The player " + players.get(0).getNumber() + " won !");
     }
 
     private void dispatch(ArrayDeque<Card> pick, Player... players){
@@ -44,7 +57,7 @@ public class Game {
         }
     }
 
-    private ArrayDeque<Card> newPick(){
+    public static ArrayDeque<Card> newPick(){
         List<Card> list = new ArrayList<>();
 
         for (CardType type : CardType.values()){
@@ -63,6 +76,22 @@ public class Game {
         Collections.shuffle(list);
 
         return new ArrayDeque<>(list);
+    }
+
+    public static List<Card> getDuplicates(List<Card> cards){
+        List<Card> duplicates = new ArrayList<>();
+
+        HashMap<Integer, Card> weights = new HashMap<>();
+
+        for (Card card : cards){
+            if (weights.containsKey(card.getType().getWeight())){
+                duplicates.add(card);
+                duplicates.add(weights.get(card.getType().getWeight()));
+            } else {
+                weights.put(card.getType().getWeight(), card);
+            }
+        }
+        return duplicates;
     }
 
     private Player fight(){
