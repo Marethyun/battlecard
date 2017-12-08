@@ -15,6 +15,8 @@ public class Game {
 
     private List<Player> players;
 
+    private List<Battle> history = new ArrayList<>();
+
     public Game(Player... players) {
         this.players = Arrays.asList(players);
     }
@@ -28,12 +30,15 @@ public class Game {
 
             players = players.stream().filter(player -> player.getDeck().size() > 0).collect(Collectors.toList());
 
-            new Battle(players).fight();
+            if (players.size() == 1) break;
+
+            Battle battle = new Battle(players);
+            battle.fight();
+
+            history.add(battle);
 
             players.forEach(System.out::println);
             System.out.println();
-
-
         }
 
         System.out.println("The player " + players.get(0).getNumber() + " won !");

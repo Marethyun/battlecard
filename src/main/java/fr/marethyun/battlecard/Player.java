@@ -34,6 +34,6 @@ public class Player {
 
     @Override
     public String toString() {
-        return "The player " + number + " have " + getDeck().size() + " cards";
+        return "The player " + number;
     }
 }
