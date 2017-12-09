@@ -2,19 +2,19 @@ package fr.marethyun.battlecard;
 
 public enum CardType {
 
-    TWO("Deux", 1),
-    THREE("Trois", 2),
-    FOUR("Quatre", 3),
-    FIVE("Cinq", 4),
+    TWO("Ace", 1),
+    THREE("Three", 2),
+    FOUR("Four", 3),
+    FIVE("Five", 4),
     SIX("Six", 5),
-    SEVEN("Sept", 6),
-    EIGHT("Huit", 7),
-    NINE("Neuf", 8),
-    TEN("Dix", 9),
-    JACK("Valet", 10),
-    QUEEN("Reine", 11),
-    KING("Roi", 12),
-    ACE("As", 13),
+    SEVEN("Seven", 6),
+    EIGHT("Eight", 7),
+    NINE("Nine", 8),
+    TEN("Ten", 9),
+    JACK("Jack", 10),
+    QUEEN("Queen", 11),
+    KING("King", 12),
+    ACE("Ace", 13),
     JOKER("Joker", 14);
 
     private String name;

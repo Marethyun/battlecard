@@ -1,8 +1,12 @@
 package fr.marethyun.battlecard;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class Player {
+public class Player implements Comparable{
 
     private static int instances = 0;
 
@@ -28,12 +32,24 @@ public class Player {
         this.deck = deck;
     }
 
+    public void shuffleDeck(){
+        List<Card> cards = new ArrayList<>(this.deck);
+        Collections.shuffle(cards);
+        this.deck = new ArrayDeque<>(cards);
+    }
+
     public int getNumber() {
         return number;
     }
 
     @Override
     public String toString() {
-        return "The player " + number;
+        return "Player " + this.number;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Player player = (Player) o;
+        return Integer.compare(player.getNumber(), this.getNumber());
     }
 }

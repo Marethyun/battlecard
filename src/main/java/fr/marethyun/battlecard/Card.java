@@ -22,7 +22,7 @@ public final class Card implements Comparable {
         if (color.equals(CardColor.NONE)){
             return type.getName();
         }
-        return type.getName() + " de " + color.getName().toLowerCase();
+        return type.getName() + " of " + color.getName().toLowerCase();
     }
 
 

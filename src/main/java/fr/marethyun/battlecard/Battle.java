@@ -2,7 +2,13 @@ package fr.marethyun.battlecard;
 
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class Battle {
+
+    private static int instances = 0;
+
+    private int id;
+
     private List<Card> bank = new ArrayList<>();
 
     private HashMap<Card, Player> bets = new HashMap<>();
@@ -10,12 +16,15 @@ public class Battle {
     private List<Player> players;
 
     private Player winner;
+    private Battle sub;
 
     public Battle(List<Player> players) {
         this.players = players;
+        Collections.sort(players);
+        instances++;
+        id = instances;
     }
 
-    @SuppressWarnings("unchecked")
     public Player fight(){
 
         List<Card> cards = new ArrayList<>();
@@ -25,8 +34,8 @@ public class Battle {
                 Card card = player.getDeck().removeFirst();
                 bets.put(card, player);
                 bank.add(card);
-            } catch (NoSuchElementException e){
-                System.out.println("The player " + player.getNumber() + " lose !");
+            } catch (NoSuchElementException ignored){
+                // A player can't fight this round
             }
         }
 
@@ -36,30 +45,42 @@ public class Battle {
 
         List<Card> duplicates = Game.getDuplicates(cards);
 
-        System.out.println(duplicates);
+        if (cards.size() == 0){
+            // Nobody have cards (random winner)
+            int random = new Random().nextInt(players.size() - 1);
+            winner = players.get(random);
+        } else if (cards.size() < players.size()) {
+            // At least one player have a card but not all
+        }
 
-        if (duplicates.size() == 0 || duplicates.size() == 1){
-            winner = bets.get(cards.get(0));
-        } else {
-            List<Player> fighters = new ArrayList<>();
-            Card highestCard = duplicates.get(0);
+        if (winner == null) {
+            // If a winner hasn't been set
+            if (duplicates.size() == 0 || duplicates.size() == 1) {
+                // No duplicate (no sub-battle, the highest card wins)
+                winner = bets.get(cards.get(0));
+            } else {
+                // Duplicate, sub-battle between the two highest cards duplicated
+                List<Player> fighters = new ArrayList<>();
+                Card highestCard = duplicates.get(0);
 
-            for (Card card : duplicates){
-                if (card.equals(highestCard)) {
-                    fighters.add(bets.get(card));
+                for (Card card : duplicates) {
+                    if (card.equals(highestCard)) {
+                        fighters.add(bets.get(card));
+                    }
                 }
+
+                Battle battle = new Battle(fighters);
+
+                winner = battle.fight();
+
+                this.sub = battle;
             }
-
-            Battle bet = new Battle(fighters);
-
-            winner = bet.fight();
         }
 
         for (Card card : bank){
             winner.getDeck().addLast(card);
         }
 
-        //winner.getDeck().addAll(bank);
         return winner;
     }
 
@@ -71,11 +92,46 @@ public class Battle {
         return winner;
     }
 
+    public Battle getSub() {
+        return sub;
+    }
+
+    public List<Card> getBank() {
+        List<Card> cards = new ArrayList<>();
+        cards.addAll(bank);
+        if (sub != null){
+            cards.addAll(sub.getBank());
+        }
+        return cards;
+    }
+
+    public static int getInstances() {
+        return instances;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
+        String desc = "Battle with id " + this.id + "\n";
+        desc += "With following fighters and troops: \n";
 
-        // TODO IMPLEMENT ToString with stats (sub-battle ?, winner, bets, bank)
+        for (Map.Entry<Card, Player> entry : this.bets.entrySet()){
+            desc += "- " + entry.getValue() + " -> " + entry.getKey() + "\n";
+        }
 
-        return super.toString();
+        if (sub != null){
+            desc += "With sub-battle with id " + sub.getId() + "\n";
+        }
+        desc += "Winner: " + this.winner + "\n";
+        desc += "Which won: \n";
+
+        for (Card card : bank){
+            desc += "- " + card + "\n";
+        }
+
+        return desc;
     }
 }

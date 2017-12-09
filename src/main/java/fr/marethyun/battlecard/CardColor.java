@@ -2,10 +2,10 @@ package fr.marethyun.battlecard;
 
 public enum CardColor {
     NONE(""),
-    SPADE("Pique"),
-    HEART("Coeur"),
-    DIAMOND("Carreau"),
-    CLUB("Trèfle");
+    SPADE("Spades"),
+    HEART("Hearts"),
+    DIAMOND("Diamonds"),
+    CLUB("Clubs");
 
     private String name;
 
