@@ -58,7 +58,7 @@ public class Game {
             battle.fight();
 
             System.out.println(battle);
-            
+
             if (Battle.getInstances() % SHUFFLE_INDEX == 0){
                 players.forEach(Player::shuffleDeck);
             }
