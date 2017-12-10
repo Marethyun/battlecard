@@ -15,8 +15,13 @@ public class Main {
         int picks = 1;
 
         if (args.length >= 2) {
-            players = Integer.parseInt(args[0]);
-            picks = Integer.parseInt(args[1]);
+            try {
+                players = Integer.parseInt(args[0]);
+                picks = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e){
+                System.out.println("The 'players' and 'picks' parameters must be numbers");
+                return;
+            }
         }
 
         List<Player> playerList = new ArrayList<>();
@@ -39,7 +44,7 @@ public class Main {
 
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
 
-                String gameDesc = "Battle with " + players + " players, " + picks + " pick(s) (" + picks * 54 + " cards) and " + battles.size() + " fights\n";
+                String gameDesc = "Battle with " + players + " players, " + picks + " pick(s) (" + picks * 54 + " cards) and " + battles.size() + " fights\n\n";
 
                 for (char c : gameDesc.toCharArray()){
                     stream.write(c);
@@ -59,10 +64,17 @@ public class Main {
                     }
                 }
 
+                String winner = "\n" + game.getWinner() + " won !";
+
+                for (char c : winner.toCharArray()){
+                    stream.write(c);
+                }
+
                 stream.close();
             }
         } catch (Exception e){
             System.out.println("An error occurred: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

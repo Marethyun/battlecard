@@ -14,6 +14,7 @@ public class Battle {
     private HashMap<Card, Player> bets = new HashMap<>();
 
     private List<Player> players;
+    private HashMap<Player, Integer> decksTrace = new HashMap<>();
 
     private Player winner;
     private Battle sub;
@@ -31,6 +32,7 @@ public class Battle {
 
         for (Player player : players) {
             try {
+                decksTrace.put(player, player.getDeck().size());
                 Card card = player.getDeck().removeFirst();
                 bets.put(card, player);
                 bank.add(card);
@@ -81,6 +83,7 @@ public class Battle {
             winner.getDeck().addLast(card);
         }
 
+        Game.registerBattle(this);
         return winner;
     }
 
@@ -119,7 +122,7 @@ public class Battle {
         desc += "With following fighters and troops: \n";
 
         for (Map.Entry<Card, Player> entry : this.bets.entrySet()){
-            desc += "- " + entry.getValue() + " -> " + entry.getKey() + "\n";
+            desc += "- " + entry.getValue() + " (" + decksTrace.get(entry.getValue()) + " cards) -> " + entry.getKey() + "\n";
         }
 
         if (sub != null){

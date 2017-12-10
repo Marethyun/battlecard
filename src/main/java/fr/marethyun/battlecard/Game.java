@@ -63,10 +63,6 @@ public class Game {
                 players.forEach(Player::shuffleDeck);
             }
 
-            if (Battle.getInstances() % SAVE_INDEX == 0){
-                history.add(battle);
-            }
-
             System.out.println();
         }
 
@@ -117,7 +113,9 @@ public class Game {
     }
 
     public static void registerBattle(Battle battle){
-        history.add(battle);
+        if (Battle.getInstances() % SAVE_INDEX == 0){
+            history.add(battle);
+        }
     }
 
     public Player getWinner() {
