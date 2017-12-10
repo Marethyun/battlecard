@@ -7,7 +7,7 @@ players: The number of players in the game (at least 2)
 picks  : The number of picks (of traditional 54 cards)
 logfile: The output file name in which the battle log will be saved
 
-By specifing any of these parameters the game starts with 2 players,
+By specifying any of these parameters the game starts with 2 players,
 1 pick and no logfile.
 The logfile is optional.
 
